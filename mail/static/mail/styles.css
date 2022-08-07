@@ -2,6 +2,7 @@ textarea {
     min-height: 400px;
 }
 
+/* load-mailbox styling */
 #mail-peo {
     font-weight: bold;
     margin-right: 60px;
@@ -24,4 +25,27 @@ textarea {
 #mail-timestamp {
     margin-left: auto;
     margin-right: 0;
+}
+
+/* view-each-email style */
+#view-email-sender, #view-email-timestamp {
+    display: inline-block;
+}
+
+#view-email-header {
+    display: flex;
+}
+
+#view-email-timestamp {
+    margin-left: auto;
+    margin-right: 10%;
+}
+
+#view-email-sender {
+    font-weight: bold;
+}
+
+#receiver {
+    font-size: small;
+    font-weight: normal;
 }

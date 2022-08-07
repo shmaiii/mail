@@ -60,6 +60,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#view-email').style.display = 'none';
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -105,8 +106,45 @@ function load_mailbox(mailbox) {
         div.style.cssText += 'backgroun-color: white';
       }
 
+      div.addEventListener('click', function() {
+        console.log(`${email.id} has been clicked`);
+        viewEmail(email.id);
+      });
 
     });
 });
 
+}
+
+function viewEmail(id) {
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#view-email').style.display = 'block';
+
+  fetch(`emails/${id}`)
+  .then(response => response.json())
+  .then(email => {
+    //print email
+    console.log(email);
+
+    //mark email as read
+    fetch(`/emails/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+          read: true
+      })
+    })
+
+    document.querySelector('#view-email-subject').innerHTML = email.subject;
+    document.querySelector('#view-email-sender').innerHTML = email.sender;
+
+    receiver = document.createElement('p');
+    receiver.innerHTML = `to ${email.recipients}`;
+    receiver.setAttribute('id', 'receiver');
+    document.querySelector('#view-email-sender').appendChild(receiver);
+    
+    document.querySelector('#view-email-timestamp').innerHTML = `${email.timestamp}`;
+    document.querySelector('#view-email-content').innerHTML = `${email.body}`;
+
+
+  });
 }
