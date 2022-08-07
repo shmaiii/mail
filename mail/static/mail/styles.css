@@ -11,6 +11,18 @@ textarea {
 #mail-peo, #mail-body, #mail-timestamp {
     display: inline;
 }
+#emails-view {
+    display: flex;
+}
+
+#mail-container, #arc-button {
+    display: inline-block;
+}
+
+#arc-button {
+    margin-left: auto;
+    margin-right:0;
+}
 
 #mail-body label{
     font-weight: bold;
@@ -24,7 +36,7 @@ textarea {
 
 #mail-timestamp {
     margin-left: auto;
-    margin-right: 0;
+    margin-right: 5%;
 }
 
 /* view-each-email style */

@@ -79,8 +79,41 @@ function load_mailbox(mailbox) {
       const divBody = document.createElement('div');
       const divTime = document.createElement('div');
       
+      document.querySelector('#emails-view').append(div);
+      div.appendChild(divPeo);
+      div.appendChild(divBody);
+      div.appendChild(divTime);
+
       if (mailbox === 'inbox' || mailbox === 'archive') {
         divPeo.innerHTML = `${email.sender}`
+        const archButton = document.createElement('div');
+        archButton.setAttribute('id', 'arc-button');
+        document.querySelector('#emails-view').append(archButton);
+
+        if (mailbox == 'inbox') {
+          archButton.innerHTML = 'archive';
+          archButton.addEventListener('click', function() {
+
+            fetch(`/emails/${email.id}`, {
+              method: 'PUT',
+              body: JSON.stringify({
+                  archive: true
+              })
+            });
+
+          });
+
+        } else {
+          archButton.innerHTML = 'unarchive';
+          archButton.addEventListener('click', function() {
+            fetch(`/emails/${email.id}`, {
+              method: 'PUT',
+              body: JSON.stringify({
+                  archive: false
+              })
+            });
+          });
+        }
       }
       else if (mailbox === 'sent') {
         divPeo.innerHTML = `${email.recipients}`
@@ -88,11 +121,6 @@ function load_mailbox(mailbox) {
 
       divBody.innerHTML = `<label style="font-weight: bold;"> ${email.subject}</label> ${email.body}`;
       divTime.innerHTML = `${email.timestamp}`;
-
-      document.querySelector('#emails-view').append(div);
-      div.appendChild(divPeo);
-      div.appendChild(divBody);
-      div.appendChild(divTime);
 
       //styling
       divBody.setAttribute('id', 'mail-body');
