@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // By default, load the inbox
   load_mailbox('inbox');
+
+  
+
 });
 
 function compose_email() {
@@ -20,7 +23,37 @@ function compose_email() {
   document.querySelector('#compose-recipients').value = '';
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
+
+  document.querySelector('#compose-form').addEventListener('submit', submit_email);
+
 }
+
+function submit_email(e) {
+  
+  e.preventDefault();
+
+  const recipients = document.querySelector('#compose-recipients').value;
+  const subject = document.querySelector('#compose-subject').value;
+  const body = document.querySelector('#compose-body').value;
+  
+  fetch('/emails', {
+    method: 'POST',
+    body: JSON.stringify({
+      recipients: recipients,
+      subject: subject,
+      body: body
+    })
+  })
+  //.then(response => response.json())
+  .then(result => {
+    load_mailbox('sent');
+  })
+  .catch(error => console.log(error));
+  
+  return false;
+
+}
+
 
 function load_mailbox(mailbox) {
   
@@ -30,4 +63,50 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+
+  fetch('/emails/'+ mailbox)
+  .then(response => response.json())
+  .then(emails => {
+    // Print emails
+    console.log(emails);
+
+    // ... do something else with emails ...'
+    emails.forEach(email => {
+      const div = document.createElement('div');
+      const divPeo = document.createElement('div');
+      const divBody = document.createElement('div');
+      const divTime = document.createElement('div');
+      
+      if (mailbox === 'inbox' || mailbox === 'archive') {
+        divPeo.innerHTML = `${email.sender}`
+      }
+      else if (mailbox === 'sent') {
+        divPeo.innerHTML = `${email.recipients}`
+      }
+
+      divBody.innerHTML = `<label style="font-weight: bold;"> ${email.subject}</label> ${email.body}`;
+      divTime.innerHTML = `${email.timestamp}`;
+
+      document.querySelector('#emails-view').append(div);
+      div.appendChild(divPeo);
+      div.appendChild(divBody);
+      div.appendChild(divTime);
+
+      //styling
+      divBody.setAttribute('id', 'mail-body');
+      div.setAttribute('id', 'mail-container');
+      divPeo.setAttribute('id', 'mail-peo');
+      divTime.setAttribute('id', 'mail-timestamp');
+
+      if (email.read === true) {
+        div.style.cssText += 'background-color:#C0C0C0;';
+      } else {
+        div.style.cssText += 'backgroun-color: white';
+      }
+
+
+    });
+});
+
 }

@@ -1,3 +1,27 @@
 textarea {
     min-height: 400px;
 }
+
+#mail-peo {
+    font-weight: bold;
+    margin-right: 60px;
+}
+
+#mail-peo, #mail-body, #mail-timestamp {
+    display: inline;
+}
+
+#mail-body label{
+    font-weight: bold;
+}
+
+#mail-container {
+    border-style:ridge;
+    border-width: 0.5px;
+    display: flex;
+}
+
+#mail-timestamp {
+    margin-left: auto;
+    margin-right: 0;
+}
