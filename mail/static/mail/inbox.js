@@ -86,9 +86,9 @@ function load_mailbox(mailbox) {
 
       if (mailbox === 'inbox' || mailbox === 'archive') {
         divPeo.innerHTML = `${email.sender}`
-        const archButton = document.createElement('div');
+        const archButton = document.createElement('button');
         archButton.setAttribute('id', 'arc-button');
-        document.querySelector('#emails-view').append(archButton);
+        div.append(archButton);
 
         if (mailbox == 'inbox') {
           archButton.innerHTML = 'archive';
@@ -97,21 +97,27 @@ function load_mailbox(mailbox) {
             fetch(`/emails/${email.id}`, {
               method: 'PUT',
               body: JSON.stringify({
-                  archive: true
+                  archived: true
               })
             });
+
+            console.log(`${email.id} has been archived`);
+            location.reload();
 
           });
 
         } else {
           archButton.innerHTML = 'unarchive';
           archButton.addEventListener('click', function() {
+
             fetch(`/emails/${email.id}`, {
               method: 'PUT',
               body: JSON.stringify({
-                  archive: false
+                  archived: false
               })
             });
+
+            location.reload();
           });
         }
       }
@@ -134,9 +140,11 @@ function load_mailbox(mailbox) {
         div.style.cssText += 'backgroun-color: white';
       }
 
-      div.addEventListener('click', function() {
-        console.log(`${email.id} has been clicked`);
-        viewEmail(email.id);
+      [divPeo, divBody, divTime].forEach(item => {
+        item.addEventListener('click', function() {
+          console.log(`${item.id} has been clicked`);
+          viewEmail(email.id);
+        })
       });
 
     });
@@ -160,7 +168,7 @@ function viewEmail(id) {
       body: JSON.stringify({
           read: true
       })
-    })
+    });
 
     document.querySelector('#view-email-subject').innerHTML = email.subject;
     document.querySelector('#view-email-sender').innerHTML = email.sender;
