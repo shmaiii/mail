@@ -1,12 +1,3 @@
-window.onpopstate = function(event) {
-  console.log(event.state.selected);
-  if (event.state.selected === 'compose') {
-    compose_email();
-  } else {
-    load_mailbox(event.state.selected);
-  }
-}
-
 document.addEventListener('DOMContentLoaded', function() {
 
   // Use buttons to toggle between views
@@ -23,8 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function compose_email() {
-
-  history.pushState({selected: 'compose'}, "", `compose`);
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
@@ -81,8 +70,6 @@ function submit_email(e) {
 
 
 function load_mailbox(mailbox) {
-
-  history.pushState({selected: mailbox}, "", `${mailbox}`);
   
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
