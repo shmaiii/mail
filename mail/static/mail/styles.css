@@ -134,3 +134,8 @@ body {
 #view-email-content {
     white-space: pre-wrap;
 }
+
+#reply-button {
+    margin: 20px;
+   
+}
