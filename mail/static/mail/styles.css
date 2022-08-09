@@ -2,10 +2,71 @@ textarea {
     min-height: 400px;
 }
 
+.login-body, .register-body {
+    margin: 20px;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+body {
+    background-color: whitesmoke;
+    margin: 0;
+    padding:0;
+}
+
+.sidebar{
+    margin: 0px;
+    padding: 10px;
+    width: 300px;
+    background-color: #007CC2;
+    color: white;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    overflow-wrap: break-word;
+}
+
+.btn {
+    text-decoration: none;
+    color: white;
+}
+
+.btn:hover {
+    background-color: #6FCFF5;
+    color: black;
+}
+
+.body-all {
+    margin-left: 300px;
+    margin-right: 0px;
+    padding-left: 15px;
+    height: 800px;
+    width: 100%;
+    background-color: whitesmoke;
+}
+
+@media screen and (max-width: 700px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    btn { float: left;}
+    .body-all {margin-left: 0px;}
+}
+
+
 /* load-mailbox styling */
 #mail-peo {
     font-weight: bold;
     margin-right: 60px;
+    width: 300px;
+    overflow:hidden;
 }
 
 #mail-peo, #mail-body, #mail-timestamp {
@@ -13,10 +74,12 @@ textarea {
 }
 #emails-view {
     display: flex;
+    margin-right: 0px;
+    position: relative;
 }
 
 #mail-container, #arc-button {
-    display: inline-block;
+    display: inline;
 }
 
 #arc-button {
@@ -32,11 +95,17 @@ textarea {
     border-style:ridge;
     border-width: 0.5px;
     display: flex;
+    width:auto;
+    padding: 3px;
+}
+
+#mail-container:hover {
+    border-width: 1.5px;
 }
 
 #mail-timestamp {
     margin-left: auto;
-    margin-right: 5%;
+    margin-right: 0;
 }
 
 /* view-each-email style */
@@ -60,4 +129,8 @@ textarea {
 #receiver {
     font-size: small;
     font-weight: normal;
+}
+
+#view-email-content {
+    white-space: pre-wrap;
 }

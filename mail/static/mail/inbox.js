@@ -1,7 +1,18 @@
+window.onpopstate = function(event) {
+  console.log(event.state.selected);
+  if (event.state.selected === 'compose') {
+    compose_email();
+  } else {
+    load_mailbox(event.state.selected);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
   // Use buttons to toggle between views
-  document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
+  document.querySelector('#inbox').addEventListener('click', function() { 
+    load_mailbox('inbox');
+  });
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
@@ -9,11 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // By default, load the inbox
   load_mailbox('inbox');
 
-  
-
 });
 
 function compose_email() {
+
+  history.pushState({selected: 'compose'}, "", `compose`);
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
@@ -30,6 +41,7 @@ function compose_email() {
 }
 
 function compose_reply(oriEmail) {
+
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
@@ -69,6 +81,8 @@ function submit_email(e) {
 
 
 function load_mailbox(mailbox) {
+
+  history.pushState({selected: mailbox}, "", `${mailbox}`);
   
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
@@ -76,7 +90,7 @@ function load_mailbox(mailbox) {
   document.querySelector('#view-email').style.display = 'none';
 
   // Show the mailbox name
-  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  document.querySelector('#emails-view').innerHTML = `<h1>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h1>`;
 
 
   fetch('/emails/'+ mailbox)
@@ -85,7 +99,6 @@ function load_mailbox(mailbox) {
     // Print emails
     console.log(emails);
 
-    // ... do something else with emails ...'
     emails.forEach(email => {
       const div = document.createElement('div');
       const divPeo = document.createElement('div');
@@ -138,7 +151,7 @@ function load_mailbox(mailbox) {
         divPeo.innerHTML = `${email.recipients}`
       }
 
-      divBody.innerHTML = `<label style="font-weight: bold;"> ${email.subject}</label> ${email.body}`;
+      divBody.innerHTML = `<label style="font-weight: bold;"> ${email.subject}</label>`;
       divTime.innerHTML = `${email.timestamp}`;
 
       //styling
@@ -148,9 +161,9 @@ function load_mailbox(mailbox) {
       divTime.setAttribute('id', 'mail-timestamp');
 
       if (email.read === true) {
-        div.style.cssText += 'background-color:#C0C0C0;';
+        div.style.cssText += 'background-color:#E5E5E5;';
       } else {
-        div.style.cssText += 'backgroun-color: white';
+        div.style.cssText += 'backgrounD-color: whitesmoke';
       }
 
       [divPeo, divBody, divTime].forEach(item => {
