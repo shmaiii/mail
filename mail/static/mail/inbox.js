@@ -18,6 +18,7 @@ function compose_email() {
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#view-email').style.display = 'none';
 
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
@@ -26,6 +27,18 @@ function compose_email() {
 
   document.querySelector('#compose-form').addEventListener('submit', submit_email);
 
+}
+
+function compose_reply(oriEmail) {
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'block';
+
+  //prefill composition field
+  document.querySelector('#compose-recipients').value = oriEmail.sender;
+  document.querySelector('#compose-subject').value = `Re:${oriEmail.subject}`;
+  document.querySelector('#compose-body').value = `On ${oriEmail.timestamp}, ${oriEmail.sender} wrote: \n ${oriEmail.body} \n`;
+
+  document.querySelector('#compose-form').addEventListener('submit', submit_email);
 }
 
 function submit_email(e) {
@@ -180,6 +193,11 @@ function viewEmail(id) {
     
     document.querySelector('#view-email-timestamp').innerHTML = `${email.timestamp}`;
     document.querySelector('#view-email-content').innerHTML = `${email.body}`;
+
+    document.querySelector('#reply-button').addEventListener('click', function() {
+      console.log(`Reply for ${email.id} has been clicked`);
+      compose_reply(email);
+    })
 
 
   });
